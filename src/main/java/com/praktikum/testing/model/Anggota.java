@@ -13,6 +13,12 @@ public class Anggota {
     private List<String> idBukuDipinjam;
     private boolean aktif;
 
+    public String getBukuDipinjam() {
+    }
+
+    public boolean isBolehPinjamLagi() {
+    }
+
     public enum TipeAnggota {
         MAHASISWA, DOSEN, UMUM
     }
