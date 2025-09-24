@@ -69,4 +69,12 @@ public class KalkulatorDenda {
                 throw new IllegalArgumentException("Tipe anggota tidak dikenal: " + tipeAnggota);
         }
     }
+
+    public boolean adaDenda(Peminjaman peminjamanTerlambat) {
+        return false;
+    }
+
+    public String getDeskripsiDenda(double v) {
+        return "";
+    }
 }
