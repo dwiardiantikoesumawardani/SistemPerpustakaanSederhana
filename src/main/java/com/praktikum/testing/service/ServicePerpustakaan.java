@@ -131,4 +131,8 @@ public class ServicePerpustakaan {
 
         return false;
     }
+
+    public int getJumlahTersedia(String number) {
+        return 0;
+    }
 }
