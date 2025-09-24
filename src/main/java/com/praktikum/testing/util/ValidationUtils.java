@@ -76,4 +76,7 @@ public class ValidationUtils {
     public static boolean isAngkaNonNegatif(double angka) {
         return angka >= 0;
     }
+
+    public static boolean isValidNISN(String number) {
+    }
 }
