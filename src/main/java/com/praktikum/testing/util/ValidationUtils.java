@@ -78,5 +78,6 @@ public class ValidationUtils {
     }
 
     public static boolean isValidNISN(String number) {
+        return false;
     }
 }

@@ -14,9 +14,11 @@ public class Anggota {
     private boolean aktif;
 
     public String getBukuDipinjam() {
+        return "";
     }
 
     public boolean isBolehPinjamLagi() {
+        return false;
     }
 
     public enum TipeAnggota {
