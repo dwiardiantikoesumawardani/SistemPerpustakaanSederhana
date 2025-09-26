@@ -19,42 +19,43 @@ public class KalkulatorDendaTest {
     private Anggota anggotaUmum;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         kalkulatorDenda = new KalkulatorDenda();
         anggotaMahasiswa = new Anggota("M001", "John Student", "john@student.ac.id",
-                "O8I1234567890", Anggota.TipeAnggota.MAHASISWA);
-        anggotaDosen = new Anggota("D001", "Dr. Faculty", "faculty@univ.ac.id",
-                "O8I1234567891", Anggota.TipeAnggota.DOSEN);
-        anggotaUmum = new Anggota("U001", "Public User", "public@gmail.com",
-                "O8I1234567892", Anggota.TipeAnggota.UMUM);
+                "081234567890", Anggota.TipeAnggota.MAHASISWA);
+
+        anggotaDosen = new Anggota("D001", "Dr. Smith", "smith@univ.ac.id",
+                "081234567891", Anggota.TipeAnggota.DOSEN);
+
+        anggotaUmum = new Anggota("U001", "Public User", "public@email.com",
+                "081234567892", Anggota.TipeAnggota.UMUM);
     }
 
     @Test
     @DisplayName("Tidak ada denda untuk peminjaman yang tidak terlambat")
     void testTidakAdaDendaUntukPeminjamanTidakTerlambat() {
-        LocalDate tanggalPinjam = LocalDate.now().minusDays(1);
+        LocalDate tanggalPinjam = LocalDate.now().minusDays(5);
         LocalDate tanggalJatuhTempo = LocalDate.now().plusDays(2);
 
-        Peminjaman peminjaman = new Peminjaman("P001", "W001", "1234567890",
+        Peminjaman peminjaman = new Peminjaman("P001", "M001", "1234567890",
                 tanggalPinjam, tanggalJatuhTempo);
 
         double denda = kalkulatorDenda.hitungDenda(peminjaman, anggotaMahasiswa);
 
-        assertEquals(0.0, denda, "Denda harus 0 untuk peminjaman yang tidak terlambat"
-        );
+        assertEquals(0.0, denda, "Denda harus 0 untuk peminjaman yang tidak terlambat");
     }
 
     @Test
     @DisplayName("Hitung denda mahasiswa 3 hari terlambat")
-    void testHitungDendaMahasiswaTigaHariTerlambat() {
+    void testHitungDendaMahasiswa() {
         LocalDate tanggalPinjam = LocalDate.now().minusDays(10);
-        LocalDate tanggalJatuhTempo = LocalDate.now().minusDays(7); // 3 hari terlambat
+        LocalDate tanggalJatuhTempo = LocalDate.now().minusDays(3); // 3 hari terlambat
 
-        Peminjaman peminjaman = new Peminjaman("P001", "W001", "1234567890",
+        Peminjaman peminjaman = new Peminjaman("P001", "M001", "1234567890",
                 tanggalPinjam, tanggalJatuhTempo);
 
-        double dendaAktual = kalkulatorDenda.hitungDenda(peminjaman, anggotaMahasiswa
-        );
+        double dendaAktual = kalkulatorDenda.hitungDenda(peminjaman, anggotaMahasiswa);
+
         assertEquals(3000.0, dendaAktual, "3 hari x 1000 harus sama dengan 3000");
     }
 
@@ -62,12 +63,13 @@ public class KalkulatorDendaTest {
     @DisplayName("Hitung denda dosen 5 hari terlambat")
     void testHitungDendaDosen() {
         LocalDate tanggalPinjam = LocalDate.now().minusDays(12);
-        LocalDate tanggalJatuhTempo = LocalDate.now().minusDays(7); // 5 hari terlambat
+        LocalDate tanggalJatuhTempo = LocalDate.now().minusDays(5); // 5 hari terlambat
 
         Peminjaman peminjaman = new Peminjaman("P001", "D001", "1234567890",
                 tanggalPinjam, tanggalJatuhTempo);
 
         double dendaAktual = kalkulatorDenda.hitungDenda(peminjaman, anggotaDosen);
+
         assertEquals(10000.0, dendaAktual, "5 hari x 2000 harus sama dengan 10000");
     }
 
@@ -81,21 +83,23 @@ public class KalkulatorDendaTest {
         Peminjaman peminjaman = new Peminjaman("P001", "M001", "1234567890",
                 tanggalPinjam, tanggalJatuhTempo);
 
-        double dendaAktual = kalkulatorDenda.hitungDenda(peminjaman, anggotaMahasiswa
-        );
+        double dendaAktual = kalkulatorDenda.hitungDenda(peminjaman, anggotaMahasiswa);
+
         assertEquals(50000.0, dendaAktual, "Denda tidak boleh melebihi batas maksimal mahasiswa");
     }
 
     @Test
     @DisplayName("Exception untuk parameter null")
     void testExceptionParameterNull() {
-        assertThrows(IllegalArgumentException.class, () -> kalkulatorDenda.hitungDenda(null, anggotaMahasiswa),
+        assertThrows(IllegalArgumentException.class,
+                () -> kalkulatorDenda.hitungDenda(null, anggotaMahasiswa),
                 "Harus throw exception untuk peminjaman null");
 
-        Peminjaman peminjaman = new Peminjaman("P001", "W001", "1234567890",
+        Peminjaman peminjaman = new Peminjaman("P001", "M001", "1234567890",
                 LocalDate.now(), LocalDate.now().plusDays(7));
 
-        assertThrows(IllegalArgumentException.class, () -> kalkulatorDenda.hitungDenda(peminjaman, null),
+        assertThrows(IllegalArgumentException.class,
+                () -> kalkulatorDenda.hitungDenda(peminjaman, null),
                 "Harus throw exception untuk anggota null");
     }
 
@@ -107,7 +111,7 @@ public class KalkulatorDendaTest {
         assertEquals(1500.0, kalkulatorDenda.getTarifDendaHarian(Anggota.TipeAnggota.UMUM));
 
         assertThrows(IllegalArgumentException.class,
-                    () -> kalkulatorDenda.getTarifDendaHarian(null));
+                () -> kalkulatorDenda.getTarifDendaHarian(null));
     }
 
     @Test
@@ -118,22 +122,25 @@ public class KalkulatorDendaTest {
         assertEquals(75000.0, kalkulatorDenda.getDendaMaksimal(Anggota.TipeAnggota.UMUM));
 
         assertThrows(IllegalArgumentException.class,
-                    () -> kalkulatorDenda.getDendaMaksimal(null));
+                () -> kalkulatorDenda.getDendaMaksimal(null));
     }
 
     @Test
     @DisplayName("Cek ada denda")
     void testAdaDenda() {
-        // Peminjaman terlambat
-        LocalDate tanggalJatuhTempo = LocalDate.now().minusDays(1);
+        // peminjaman terlambat
+        LocalDate tanggalJatuhTempo = LocalDate.now().minusDays(5);
         Peminjaman peminjamanTerlambat = new Peminjaman("P001", "M001", "1234567890",
-                LocalDate.now().minusDays(8), tanggalJatuhTempo);
+                LocalDate.now().minusDays(10), tanggalJatuhTempo);
+
+        double dendaAktual = kalkulatorDenda.hitungDenda(peminjamanTerlambat, anggotaMahasiswa);
 
         assertTrue(kalkulatorDenda.adaDenda(peminjamanTerlambat));
 
         // Peminjaman tidak terlambat
-        Peminjaman peminjamanTidakTerlambat = new Peminjaman("P002", "M001", "1234567890",
-                LocalDate.now().minusDays(3), LocalDate.now().plusDays(4));
+        Peminjaman peminjamanTidakTerlambat = new Peminjaman("P002", "M001",
+                "1234567890", LocalDate.now().minusDays(3),
+                LocalDate.now().plusDays(1));
 
         assertFalse(kalkulatorDenda.adaDenda(peminjamanTidakTerlambat));
 
@@ -149,4 +156,23 @@ public class KalkulatorDendaTest {
         assertEquals("Denda sedang", kalkulatorDenda.getDeskripsiDenda(25000.0));
         assertEquals("Denda berat", kalkulatorDenda.getDeskripsiDenda(75000.0));
     }
+    public boolean adaDenda(Peminjaman peminjamanTerlambat) {
+        if (peminjamanTerlambat == null) {
+            return false;
+        }
+        return peminjamanTerlambat.isTerlambat();
+    }
+
+    public String getDeskripsiDenda(double v) {
+        if (v <= 0) {
+            return "Tidak ada denda";
+        } else if (v <= 10000) {
+            return "Denda ringan";
+        } else if (v <= 50000) {
+            return "Denda sedang";
+        } else {
+            return "Denda berat";
+        }
+    }
+
 }

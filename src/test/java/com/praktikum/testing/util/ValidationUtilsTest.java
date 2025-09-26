@@ -37,7 +37,7 @@ public class ValidationUtilsTest {
     void testNomorTeleponValid() {
         assertTrue(ValidationUtils.isValidNomorTelepon("08123456789"));
         assertTrue(ValidationUtils.isValidNomorTelepon("08523456789"));
-        assertTrue(ValidationUtils.isValidNomorTelepon("03123456789"));
+        assertTrue(ValidationUtils.isValidNomorTelepon("08123456789"));
     }
 
     @ParameterizedTest

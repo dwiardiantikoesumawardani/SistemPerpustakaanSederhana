@@ -13,17 +13,7 @@ public class Anggota {
     private List<String> idBukuDipinjam;
     private boolean aktif;
 
-    public String getBukuDipinjam() {
-        return "";
-    }
-
-    public boolean isBolehPinjamLagi() {
-        return false;
-    }
-
-    public enum TipeAnggota {
-        MAHASISWA, DOSEN, UMUM
-    }
+    public enum TipeAnggota { MAHASISWA, DOSEN, UMUM }
 
     public Anggota() {
         this.idBukuDipinjam = new ArrayList<>();
@@ -40,66 +30,29 @@ public class Anggota {
         this.aktif = true;
     }
 
-    // Getters dan Setters
-    public String getIdAnggota() {
-        return idAnggota;
+    public boolean isBolehPinjamLagi() {
+        return aktif && getJumlahBukuDipinjam() < getBatasPinjam();
     }
 
-    public void setIdAnggota(String idAnggota) {
-        this.idAnggota = idAnggota;
+    public String getBukuDipinjam() {
+        return String.join(",", idBukuDipinjam);
     }
 
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelepon() {
-        return telepon;
-    }
-
-    public void setTelepon(String telepon) {
-        this.telepon = telepon;
-    }
-
-    public TipeAnggota getTipeAnggota() {
-        return tipeAnggota;
-    }
-
-    public void setTipeAnggota(TipeAnggota tipeAnggota) {
-        this.tipeAnggota = tipeAnggota;
-    }
-
-    public List<String> getIdBukuDipinjam() {
-        return new ArrayList<>(idBukuDipinjam);
-    }
-
-    public void setIdBukuDipinjam(List<String> idBukuDipinjam) {
-        this.idBukuDipinjam = new ArrayList<>(idBukuDipinjam);
-    }
-
-    public boolean isAktif() {
-        return aktif;
-    }
-
-    public void setAktif(boolean aktif) {
-        this.aktif = aktif;
-    }
-
-    public int getJumlahBukuDipinjam() {
-        return idBukuDipinjam.size();
-    }
+    public String getIdAnggota() { return idAnggota; }
+    public void setIdAnggota(String idAnggota) { this.idAnggota = idAnggota; }
+    public String getNama() { return nama; }
+    public void setNama(String nama) { this.nama = nama; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getTelepon() { return telepon; }
+    public void setTelepon(String telepon) { this.telepon = telepon; }
+    public TipeAnggota getTipeAnggota() { return tipeAnggota; }
+    public void setTipeAnggota(TipeAnggota tipeAnggota) { this.tipeAnggota = tipeAnggota; }
+    public List<String> getIdBukuDipinjam() { return new ArrayList<>(idBukuDipinjam); }
+    public void setIdBukuDipinjam(List<String> idBukuDipinjam) { this.idBukuDipinjam = new ArrayList<>(idBukuDipinjam); }
+    public boolean isAktif() { return aktif; }
+    public void setAktif(boolean aktif) { this.aktif = aktif; }
+    public int getJumlahBukuDipinjam() { return idBukuDipinjam.size(); }
 
     public int getBatasPinjam() {
         switch (tipeAnggota) {
@@ -110,14 +63,8 @@ public class Anggota {
         }
     }
 
-    public boolean bolehPinjamLagi() {
-        return aktif && getJumlahBukuDipinjam() < getBatasPinjam();
-    }
-
     public void tambahBukuDipinjam(String idBuku) {
-        if (!idBukuDipinjam.contains(idBuku)) {
-            idBukuDipinjam.add(idBuku);
-        }
+        if (!idBukuDipinjam.contains(idBuku)) idBukuDipinjam.add(idBuku);
     }
 
     public void hapusBukuDipinjam(String idBuku) {

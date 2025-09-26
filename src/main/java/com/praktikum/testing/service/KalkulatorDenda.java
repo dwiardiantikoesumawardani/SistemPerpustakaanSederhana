@@ -70,11 +70,27 @@ public class KalkulatorDenda {
         }
     }
 
-    public boolean adaDenda(Peminjaman peminjamanTerlambat) {
-        return false;
+    // ganti/replace method adaDenda(...) kalau belum seperti ini:
+    public boolean adaDenda(Peminjaman peminjaman) {
+        if (peminjaman == null) {
+            return false;
+        }
+        // Pastikan kita menganggap ada denda kalau ada keterlambatan hari > 0
+        // (gunakan isTerlambat() jika tersedia; combine untuk safety)
+        return peminjaman.isTerlambat() || peminjaman.getHariTerlambat() > 0;
     }
 
-    public String getDeskripsiDenda(double v) {
-        return "";
+    // ganti/replace method getDeskripsiDenda(...) dengan ini:
+    public String getDeskripsiDenda(double denda) {
+        if (denda <= 0) {
+            return "Tidak ada denda";
+        } else if (denda <= 10000) {
+            return "Denda ringan";
+        } else if (denda <= 50000) {
+            return "Denda sedang";
+        } else {
+            return "Denda berat";
+        }
     }
+
 }
